@@ -1,0 +1,74 @@
+{
+    "sourceFile": "Data/AppDbContext.cs",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 14,
+            "patches": [
+                {
+                    "date": 1748494886465,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1748495031707,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,7 +8,10 @@\n             : base(options)\r\n         {\r\n         }\r\n \r\n-        // DbSet<T> properties go here\r\n+        // Example DbSet properties. Replace with your actual entities.\r\n+        public DbSet<AtikBildirim> AtikBildirims { get; set; }\r\n+        public DbSet<Kullanici> Kullanicis { get; set; }\r\n+        // Add more DbSet<T> as needed\r\n     }\r\n }\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1748497509943,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,9 +9,9 @@\n         {\r\n         }\r\n \r\n         // Example DbSet properties. Replace with your actual entities.\r\n-        public DbSet<AtikBildirim> AtikBildirims { get; set; }\r\n-        public DbSet<Kullanici> Kullanicis { get; set; }\r\n+        public DbSet<AtikBildirim> AtikBildirimFormu { get; set; }\r\n+        public DbSet<Kullanici> ErrorViewModel { get; set; }\r\n         // Add more DbSet<T> as needed\r\n     }\r\n }\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1748497978869,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,9 +9,9 @@\n         {\r\n         }\r\n \r\n         // Example DbSet properties. Replace with your actual entities.\r\n-        public DbSet<AtikBildirim> AtikBildirimFormu { get; set; }\r\n-        public DbSet<Kullanici> ErrorViewModel { get; set; }\r\n+        public DbSet<AtikBildirimFormu> AtikBildirimFormu { get; set; }\r\n+        public DbSet<ErrorViewModel> ErrorViewModel { get; set; }\r\n         // Add more DbSet<T> as needed\r\n     }\r\n }\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1748498003411,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,6 @@\n using Microsoft.EntityFrameworkCore;\r\n+using TestNo_9999999.Models;\r\n \r\n namespace TestNo_9999999.Data\r\n {\r\n     public class AppDbContext : DbContext\r\n"
+                },
+                {
+                    "date": 1748498155451,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,8 +11,7 @@\n         }\r\n \r\n         // Example DbSet properties. Replace with your actual entities.\r\n         public DbSet<AtikBildirimFormu> AtikBildirimFormu { get; set; }\r\n-        public DbSet<ErrorViewModel> ErrorViewModel { get; set; }\r\n         // Add more DbSet<T> as needed\r\n     }\r\n }\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1748498209959,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,6 +12,20 @@\n \r\n         // Example DbSet properties. Replace with your actual entities.\r\n         public DbSet<AtikBildirimFormu> AtikBildirimFormu { get; set; }\r\n         // Add more DbSet<T> as needed\r\n+\r\n+        protected override void OnModelCreating(ModelBuilder modelBuilder)\r\n+        {\r\n+            base.OnModelCreating(modelBuilder);\r\n+            \r\n+            // Configure AtikBildirimFormu entity\r\n+            modelBuilder.Entity<AtikBildirimFormu>(entity =>\r\n+            {\r\n+                // Add configurations like keys, relationships, indexes, etc.\r\n+                // Example: entity.HasKey(e => e.Id);\r\n+            });\r\n+\r\n+            // Add more entity configurations as needed\r\n+        }\r\n     }\r\n }\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1748498363582,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,23 +9,52 @@\n             : base(options)\r\n         {\r\n         }\r\n \r\n-        // Example DbSet properties. Replace with your actual entities.\r\n-        public DbSet<AtikBildirimFormu> AtikBildirimFormu { get; set; }\r\n-        // Add more DbSet<T> as needed\r\n+        public DbSet<AtikBildirimFormu> AtikBildirimFormus { get; set; }\r\n \r\n         protected override void OnModelCreating(ModelBuilder modelBuilder)\r\n         {\r\n             base.OnModelCreating(modelBuilder);\r\n-            \r\n+\r\n             // Configure AtikBildirimFormu entity\r\n             modelBuilder.Entity<AtikBildirimFormu>(entity =>\r\n             {\r\n-                // Add configurations like keys, relationships, indexes, etc.\r\n-                // Example: entity.HasKey(e => e.Id);\r\n+                entity.HasKey(e => e.Id);\r\n+                \r\n+                entity.Property(e => e.KayitNo)\r\n+                    .IsRequired()\r\n\\ No newline at end of file\n+                    .HasMaxLength(100);\r\n+\r\n+                entity.Property(e => e.GonderenKisim)\r\n+                    .IsRequired()\r\n+                    .HasMaxLength(200);\r\n+\r\n+                entity.Property(e => e.GonderenKisi)\r\n+                    .IsRequired()\r\n+                    .HasMaxLength(200);\r\n+\r\n+                entity.Property(e => e.AtikIsmi)\r\n+                    .IsRequired()\r\n+                    .HasMaxLength(500);\r\n+\r\n+                entity.Property(e => e.SapmaDkHtf)\r\n+                    .HasMaxLength(500);\r\n+\r\n+                entity.Property(e => e.MiktarKg)\r\n+                    .HasColumnType(\"decimal(18, 4)\");\r\n+\r\n+                entity.Property(e => e.Durum)\r\n+                    .HasMaxLength(100);\r\n+\r\n+                entity.Property(e => e.KisimAtikSorumlusuId)\r\n+                    .HasMaxLength(100);\r\n+\r\n+                entity.Property(e => e.UsmPersoneli)\r\n+                    .HasMaxLength(200);\r\n+\r\n+                entity.Property(e => e.UsmPersonelId)\r\n+                    .HasMaxLength(100);\r\n             });\r\n-\r\n-            // Add more entity configurations as needed\r\n         }\r\n     }\r\n-}\n+}\r\n"
+                },
+                {
+                    "date": 1748498383842,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -56,5 +56,5 @@\n                     .HasMaxLength(100);\r\n             });\r\n         }\r\n     }\r\n-}\n\\ No newline at end of file\n+}\r\n"
+                },
+                {
+                    "date": 1748498671320,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,9 +9,9 @@\n             : base(options)\r\n         {\r\n         }\r\n \r\n-        public DbSet<AtikBildirimFormu> AtikBildirimFormus { get; set; }\r\n+        public DbSet<AtikBildirimFormu> AtikBildirimFormu { get; set; }\r\n \r\n         protected override void OnModelCreating(ModelBuilder modelBuilder)\r\n         {\r\n             base.OnModelCreating(modelBuilder);\r\n"
+                },
+                {
+                    "date": 1748499431922,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,9 +9,9 @@\n             : base(options)\r\n         {\r\n         }\r\n \r\n-        public DbSet<AtikBildirimFormu> AtikBildirimFormu { get; set; }\r\n+        public DbSet<AtikBildirimFormu> AtikBildirimFormlari { get; set; }\r\n \r\n         protected override void OnModelCreating(ModelBuilder modelBuilder)\r\n         {\r\n             base.OnModelCreating(modelBuilder);\r\n"
+                },
+                {
+                    "date": 1748499453299,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,58 @@\n+using Microsoft.EntityFrameworkCore;\r\n+using TestNo_9999999.Models;\r\n+\r\n+namespace TestNo_9999999.Data\r\n+{\r\n+    public class AppDbContext : DbContext\r\n+    {\r\n+        public AppDbContext(DbContextOptions<AppDbContext> options)\r\n+            : base(options)\r\n+        {\r\n+        }\r\n+\r\n+        public DbSet<AtikBildirimFormu> AtikBildirimFormlari { get; set; }\r\n+\r\n+        protected override void OnModelCreating(ModelBuilder modelBuilder)\r\n+        {\r\n+            // Configure AtikBildirimFormu entity\r\n+            modelBuilder.Entity<AtikBildirimFormu>(entity =>\r\n+            {\r\n+                entity.HasKey(e => e.Id);\r\n+                \r\n+                entity.Property(e => e.KayitNo)\r\n+                    .IsRequired()\r\n+                    .HasMaxLength(100);\r\n+\r\n+                entity.Property(e => e.GonderenKisim)\r\n+                    .IsRequired()\r\n+                    .HasMaxLength(200);\r\n+\r\n+                entity.Property(e => e.GonderenKisi)\r\n+                    .IsRequired()\r\n+                    .HasMaxLength(200);\r\n+\r\n+                entity.Property(e => e.AtikIsmi)\r\n+                    .IsRequired()\r\n+                    .HasMaxLength(500);\r\n+\r\n+                entity.Property(e => e.SapmaDkHtf)\r\n+                    .HasMaxLength(500);\r\n+\r\n+                entity.Property(e => e.MiktarKg)\r\n+                    .HasColumnType(\"decimal(18, 4)\");\r\n+\r\n+                entity.Property(e => e.Durum)\r\n+                    .HasMaxLength(100);\r\n+\r\n+                entity.Property(e => e.KisimAtikSorumlusuId)\r\n+                    .HasMaxLength(100);\r\n+\r\n+                entity.Property(e => e.UsmPersoneli)\r\n+                    .HasMaxLength(200);\r\n+\r\n+                entity.Property(e => e.UsmPersonelId)\r\n+                    .HasMaxLength(100);\r\n+            });\r\n+        }\r\n+    }\r\n+}\r\n"
+                },
+                {
+                    "date": 1748499480983,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -55,64 +55,4 @@\n             });\r\n         }\r\n     }\r\n }\r\n-using Microsoft.EntityFrameworkCore;\r\n-using TestNo_9999999.Models;\r\n-\r\n-namespace TestNo_9999999.Data\r\n-{\r\n-    public class AppDbContext : DbContext\r\n-    {\r\n-        public AppDbContext(DbContextOptions<AppDbContext> options)\r\n-            : base(options)\r\n-        {\r\n-        }\r\n-\r\n-        public DbSet<AtikBildirimFormu> AtikBildirimFormlari { get; set; }\r\n-\r\n-        protected override void OnModelCreating(ModelBuilder modelBuilder)\r\n-        {\r\n-            base.OnModelCreating(modelBuilder);\r\n-\r\n-            // Configure AtikBildirimFormu entity\r\n-            modelBuilder.Entity<AtikBildirimFormu>(entity =>\r\n-            {\r\n-                entity.HasKey(e => e.Id);\r\n-                \r\n-                entity.Property(e => e.KayitNo)\r\n-                    .IsRequired()\r\n-                    .HasMaxLength(100);\r\n-\r\n-                entity.Property(e => e.GonderenKisim)\r\n-                    .IsRequired()\r\n-                    .HasMaxLength(200);\r\n-\r\n-                entity.Property(e => e.GonderenKisi)\r\n-                    .IsRequired()\r\n-                    .HasMaxLength(200);\r\n-\r\n-                entity.Property(e => e.AtikIsmi)\r\n-                    .IsRequired()\r\n-                    .HasMaxLength(500);\r\n-\r\n-                entity.Property(e => e.SapmaDkHtf)\r\n-                    .HasMaxLength(500);\r\n-\r\n-                entity.Property(e => e.MiktarKg)\r\n-                    .HasColumnType(\"decimal(18, 4)\");\r\n-\r\n-                entity.Property(e => e.Durum)\r\n-                    .HasMaxLength(100);\r\n-\r\n-                entity.Property(e => e.KisimAtikSorumlusuId)\r\n-                    .HasMaxLength(100);\r\n-\r\n-                entity.Property(e => e.UsmPersoneli)\r\n-                    .HasMaxLength(200);\r\n-\r\n-                entity.Property(e => e.UsmPersonelId)\r\n-                    .HasMaxLength(100);\r\n-            });\r\n-        }\r\n-    }\r\n-}\r\n"
+                },
+                {
+                    "date": 1748500891645,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -55,4 +55,14 @@\n             });\r\n         }\r\n     }\r\n }\r\n+\r\n+public void ConfigureServices(IServiceCollection services)\r\n+{\r\n+    services.AddDbContext<AppDbContext>(options =>\r\n+        options.UseSqlServer(\r\n+            Configuration.GetConnectionString(\"DefaultConnection\"),\r\n+            sqlOptions => sqlOptions.EnableRetryOnFailure()\r\n+        )\r\n+    );\r\n+}\r\n"
+                },
+                {
+                    "date": 1748501612584,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -56,13 +56,4 @@\n         }\r\n     }\r\n }\r\n \r\n-public void ConfigureServices(IServiceCollection services)\r\n-{\r\n-    services.AddDbContext<AppDbContext>(options =>\r\n-        options.UseSqlServer(\r\n-            Configuration.GetConnectionString(\"DefaultConnection\"),\r\n-            sqlOptions => sqlOptions.EnableRetryOnFailure()\r\n-        )\r\n-    );\r\n-}\r\n"
+                }
+            ],
+            "date": 1748494886465,
+            "name": "Commit-0",
+            "content": "using Microsoft.EntityFrameworkCore;\r\n\r\nnamespace TestNo_9999999.Data\r\n{\r\n    public class AppDbContext : DbContext\r\n    {\r\n        public AppDbContext(DbContextOptions<AppDbContext> options)\r\n            : base(options)\r\n        {\r\n        }\r\n\r\n        // DbSet<T> properties go here\r\n    }\r\n}"
+        }
+    ]
+}

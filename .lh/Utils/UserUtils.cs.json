@@ -1,0 +1,30 @@
+{
+    "sourceFile": "Utils/UserUtils.cs",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 3,
+            "patches": [
+                {
+                    "date": 1748498922534,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1748498948408,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -42,9 +42,8 @@\n             }\r\n             return false;\r\n         }\r\n \r\n-        // Helper method to get claim value\r\n         public static string GetClaimValue(HttpContext context, string claimType)\r\n         {\r\n             if (context.User.Identity.IsAuthenticated)\r\n             {\r\n"
+                },
+                {
+                    "date": 1748499031648,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,6 @@\n using Microsoft.AspNetCore.Http;\r\n using System.Security.Claims;\r\n-\r\n namespace TestNo_9999999.Utils\r\n {\r\n     public static class UserUtils\r\n     {\r\n"
+                },
+                {
+                    "date": 1748499115816,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,18 +5,18 @@\n     public static class UserUtils\r\n     {\r\n         public static string GetUserName(HttpContext context)\r\n         {\r\n-            if (context.User.Identity.IsAuthenticated)\r\n+            if (context.User.Identity != null && context.User.Identity.IsAuthenticated)\r\n             {\r\n                 return context.User.Identity.Name;\r\n             }\r\n             return null;\r\n         }\r\n \r\n         public static string GetUserId(HttpContext context)\r\n         {\r\n-            if (context.User.Identity.IsAuthenticated)\r\n+            if (context.User.Identity != null && context.User.Identity.IsAuthenticated)\r\n             {\r\n                 var userIdClaim = context.User.FindFirst(\"UserId\") ?? context.User.FindFirst(ClaimTypes.NameIdentifier);\r\n                 return userIdClaim?.Value;\r\n             }\r\n@@ -24,9 +24,9 @@\n         }\r\n \r\n         public static string GetUserDepartment(HttpContext context)\r\n         {\r\n-            if (context.User.Identity.IsAuthenticated)\r\n+            if (context.User.Identity != null && context.User.Identity.IsAuthenticated)\r\n             {\r\n                 var departmentClaim = context.User.FindFirst(\"Department\");\r\n                 return departmentClaim?.Value;\r\n             }\r\n@@ -34,18 +34,18 @@\n         }\r\n \r\n         public static bool IsInRole(HttpContext context, string role)\r\n         {\r\n-            if (context.User.Identity.IsAuthenticated)\r\n+            if (context.User.Identity != null && context.User.Identity.IsAuthenticated)\r\n             {\r\n                 return context.User.IsInRole(role);\r\n             }\r\n             return false;\r\n         }\r\n \r\n         public static string GetClaimValue(HttpContext context, string claimType)\r\n         {\r\n-            if (context.User.Identity.IsAuthenticated)\r\n+            if (context.User.Identity != null && context.User.Identity.IsAuthenticated)\r\n             {\r\n                 var claim = context.User.FindFirst(claimType);\r\n                 return claim?.Value;\r\n             }\r\n"
+                }
+            ],
+            "date": 1748498922534,
+            "name": "Commit-0",
+            "content": "using Microsoft.AspNetCore.Http;\r\nusing System.Security.Claims;\r\n\r\nnamespace TestNo_9999999.Utils\r\n{\r\n    public static class UserUtils\r\n    {\r\n        public static string GetUserName(HttpContext context)\r\n        {\r\n            if (context.User.Identity.IsAuthenticated)\r\n            {\r\n                return context.User.Identity.Name;\r\n            }\r\n            return null;\r\n        }\r\n\r\n        public static string GetUserId(HttpContext context)\r\n        {\r\n            if (context.User.Identity.IsAuthenticated)\r\n            {\r\n                var userIdClaim = context.User.FindFirst(\"UserId\") ?? context.User.FindFirst(ClaimTypes.NameIdentifier);\r\n                return userIdClaim?.Value;\r\n            }\r\n            return null;\r\n        }\r\n\r\n        public static string GetUserDepartment(HttpContext context)\r\n        {\r\n            if (context.User.Identity.IsAuthenticated)\r\n            {\r\n                var departmentClaim = context.User.FindFirst(\"Department\");\r\n                return departmentClaim?.Value;\r\n            }\r\n            return null;\r\n        }\r\n\r\n        public static bool IsInRole(HttpContext context, string role)\r\n        {\r\n            if (context.User.Identity.IsAuthenticated)\r\n            {\r\n                return context.User.IsInRole(role);\r\n            }\r\n            return false;\r\n        }\r\n\r\n        // Helper method to get claim value\r\n        public static string GetClaimValue(HttpContext context, string claimType)\r\n        {\r\n            if (context.User.Identity.IsAuthenticated)\r\n            {\r\n                var claim = context.User.FindFirst(claimType);\r\n                return claim?.Value;\r\n            }\r\n            return null;\r\n        }\r\n    }\r\n}\r\n"
+        }
+    ]
+}

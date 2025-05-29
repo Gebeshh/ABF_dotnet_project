@@ -1,0 +1,158 @@
+@model TestNo_9999999.Models.AtikBildirimFormu
+
+@{
+    ViewData["Title"] = "Atık Bildirim Formu Düzenle";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="KayitNo" />
+            <input type="hidden" asp-for="Tarih" />
+            <input type="hidden" asp-for="GonderenKisi" />
+            <input type="hidden" asp-for="GonderenKisim" />
+            <input type="hidden" asp-for="KisimAtikSorumlusuId" />
+            <input type="hidden" asp-for="Durum" />
+
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Form Bilgileri</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="GonderenKisim" class="control-label"></label>
+                                <input asp-for="GonderenKisim" class="form-control" disabled />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="GonderenKisi" class="control-label"></label>
+                                <input asp-for="GonderenKisi" class="form-control" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="Tarih" class="control-label"></label>
+                                <input value="@Model.Tarih.ToString("dd.MM.yyyy")" class="form-control" disabled />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="KayitNo" class="control-label"></label>
+                                <input asp-for="KayitNo" class="form-control" disabled />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Atık Bilgileri</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="AtikCinsi" class="control-label"></label>
+                                <select asp-for="AtikCinsi" asp-items="Html.GetEnumSelectList<AtikCinsi>()" class="form-select">
+                                    <option selected disabled value="">Seçiniz</option>
+                                </select>
+                                <span asp-validation-for="AtikCinsi" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="AtikIsmi" class="control-label"></label>
+                                <input asp-for="AtikIsmi" class="form-control" />
+                                <span asp-validation-for="AtikIsmi" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group mb-3">
+                                <label asp-for="SapmaDkHtf" class="control-label"></label>
+                                <input asp-for="SapmaDkHtf" class="form-control" placeholder="Opsiyonel" />
+                                <span asp-validation-for="SapmaDkHtf" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Atık Miktarı</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="MiktarKg" class="control-label"></label>
+                                <input asp-for="MiktarKg" class="form-control" step="0.0001" />
+                                <span asp-validation-for="MiktarKg" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="MiktarAdet" class="control-label"></label>
+                                <input asp-for="MiktarAdet" class="form-control" placeholder="Opsiyonel" />
+                                <span asp-validation-for="MiktarAdet" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Ambalaj Bilgileri</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label asp-for="AmbalajVarilAdedi" class="control-label"></label>
+                                <input asp-for="AmbalajVarilAdedi" class="form-control" placeholder="Opsiyonel" />
+                                <span asp-validation-for="AmbalajVarilAdedi" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label asp-for="AmbalajFiciAdedi" class="control-label"></label>
+                                <input asp-for="AmbalajFiciAdedi" class="form-control" placeholder="Opsiyonel" />
+                                <span asp-validation-for="AmbalajFiciAdedi" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label asp-for="AmbalajIbcAdedi" class="control-label"></label>
+                                <input asp-for="AmbalajIbcAdedi" class="form-control" placeholder="Opsiyonel" />
+                                <span asp-validation-for="AmbalajIbcAdedi" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label asp-for="AmbalajTorbaAdedi" class="control-label"></label>
+                                <input asp-for="AmbalajTorbaAdedi" class="form-control" placeholder="Opsiyonel" />
+                                <span asp-validation-for="AmbalajTorbaAdedi" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+@{
+    ViewData["Title"] = "Giriş";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>Atık Bildirim Formu Sistemi</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+                    <div class="text-danger" asp-validation-summary="All"></div>
+
+                    <div class="form-group mb-3">
+                        <label for="username" class="form-label">Kullanıcı Adı</label>
+                        <input type="text" class="form-control" id="username" name="username" required />
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="password" class="form-label">Şifre</label>
+                        <input type="password" class="form-control" id="password" name="password" required />
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Giriş</button>
+                    </div>
+                </form>
+                
+                <div class="mt-4">
+                    <div class="alert alert-info">
+                        <strong>Demo Kullanıcıları:</strong>
+                        <ul class="mb-0">
+                            <li>Admin: username: <code>admin</code>, şifre: <code>123456</code></li>
+                            <li>ÜSM: username: <code>usm</code>, şifre: <code>123456</code></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

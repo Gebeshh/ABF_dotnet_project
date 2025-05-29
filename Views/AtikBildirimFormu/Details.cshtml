@@ -1,0 +1,308 @@
+@model TestNo_9999999.Models.AtikBildirimFormu
+@using System.Security.Claims
+
+@{
+    ViewData["Title"] = "Atık Bildirim Formu Detay";
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var isCreator = Model.KisimAtikSorumlusuId == userId;
+    var isUSM = User.IsInRole("USM");
+    var isAdmin = User.IsInRole("Admin");
+    var canEdit = (isCreator || isAdmin) && Model.Durum == "Hazırlanıyor";
+    var canSubmit = (isCreator || isAdmin) && Model.Durum == "Hazırlanıyor";
+    var canApprove = isUSM && Model.Durum == "Onay Bekliyor";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div>
+    <div class="row mb-3">
+        <div class="col">
+            <div class="btn-group" role="group">
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fa fa-arrow-left"></i> Listeye Dön
+                </a>
+                @if (canEdit)
+                {
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                        <i class="fa fa-edit"></i> Düzenle
+                    </a>
+                }
+                @if (canSubmit)
+                {
+                    <form asp-action="Submit" asp-route-id="@Model.Id" method="post" style="display:inline;">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-warning" onclick="return confirm('Formu onaya göndermek istediğinize emin misiniz?');">
+                            <i class="fa fa-paper-plane"></i> Onaya Gönder
+                        </button>
+                    </form>
+                }
+                @if (canApprove)
+                {
+                    <form asp-action="Approve" asp-route-id="@Model.Id" method="post" style="display:inline;">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-success" onclick="return confirm('Formu onaylamak istediğinize emin misiniz?');">
+                            <i class="fa fa-check-circle"></i> Onayla
+                        </button>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Form Bilgileri</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.KayitNo)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.KayitNo)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.Tarih)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Model.Tarih.ToString("dd.MM.yyyy")
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.GonderenKisim)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.GonderenKisim)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.GonderenKisi)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.GonderenKisi)
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Atık Bilgileri</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.AtikCinsi)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.AtikCinsi)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.AtikIsmi)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.AtikIsmi)
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.SapmaDkHtf)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @(String.IsNullOrEmpty(Model.SapmaDkHtf) ? "-" : Model.SapmaDkHtf)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.Durum)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @if (Model.Durum == "Hazırlanıyor")
+                            {
+                                <span class="badge bg-secondary">@Model.Durum</span>
+                            }
+                            else if (Model.Durum == "Onay Bekliyor")
+                            {
+                                <span class="badge bg-warning text-dark">@Model.Durum</span>
+                            }
+                            else if (Model.Durum == "Onaylandı")
+                            {
+                                <span class="badge bg-success">@Model.Durum</span>
+                            }
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Atık Miktarı</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MiktarKg)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.MiktarKg)
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MiktarAdet)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @(Model.MiktarAdet.HasValue ? Model.MiktarAdet.Value.ToString() : "-")
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Ambalaj Bilgileri</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <dl class="row">
+                        <dt class="col-sm-6">
+                            @Html.DisplayNameFor(model => model.AmbalajVarilAdedi)
+                        </dt>
+                        <dd class="col-sm-6">
+                            @(Model.AmbalajVarilAdedi.HasValue ? Model.AmbalajVarilAdedi.Value.ToString() : "-")
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col-md-4">
+                    <dl class="row">
+                        <dt class="col-sm-6">
+                            @Html.DisplayNameFor(model => model.AmbalajFiciAdedi)
+                        </dt>
+                        <dd class="col-sm-6">
+                            @(Model.AmbalajFiciAdedi.HasValue ? Model.AmbalajFiciAdedi.Value.ToString() : "-")
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col-md-4">
+                    <dl class="row">
+                        <dt class="col-sm-6">
+                            @Html.DisplayNameFor(model => model.AmbalajIbcAdedi)
+                        </dt>
+                        <dd class="col-sm-6">
+                            @(Model.AmbalajIbcAdedi.HasValue ? Model.AmbalajIbcAdedi.Value.ToString() : "-")
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <dl class="row">
+                        <dt class="col-sm-6">
+                            @Html.DisplayNameFor(model => model.AmbalajTorbaAdedi)
+                        </dt>
+                        <dd class="col-sm-6">
+                            @(Model.AmbalajTorbaAdedi.HasValue ? Model.AmbalajTorbaAdedi.Value.ToString() : "-")
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col-md-4">
+                    <dl class="row">
+                        <dt class="col-sm-6">
+                            @Html.DisplayNameFor(model => model.AmbalajKutuAdedi)
+                        </dt>
+                        <dd class="col-sm-6">
+                            @(Model.AmbalajKutuAdedi.HasValue ? Model.AmbalajKutuAdedi.Value.ToString() : "-")
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col-md-4">
+                    <dl class="row">
+                        <dt class="col-sm-6">
+                            @Html.DisplayNameFor(model => model.AmbalajPaletAdedi)
+                        </dt>
+                        <dd class="col-sm-6">
+                            @(Model.AmbalajPaletAdedi.HasValue ? Model.AmbalajPaletAdedi.Value.ToString() : "-")
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.Durum == "Onaylandı")
+    {
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">Onay Bilgileri</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-4">
+                                @Html.DisplayNameFor(model => model.UsmPersoneli)
+                            </dt>
+                            <dd class="col-sm-8">
+                                @Html.DisplayFor(model => model.UsmPersoneli)
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-4">
+                                @Html.DisplayNameFor(model => model.OnayTarihi)
+                            </dt>
+                            <dd class="col-sm-8">
+                                @(Model.OnayTarihi.HasValue ? Model.OnayTarihi.Value.ToString("dd.MM.yyyy HH:mm") : "-")
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Auto-hide alerts after 5 seconds
+            setTimeout(function () {
+                $(".alert").alert('close');
+            }, 5000);
+        });
+    </script>
+}
